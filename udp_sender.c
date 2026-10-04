@@ -35,6 +35,7 @@ int main() {
     for (int i = 0; i < 100000; i++) {
         if (send(fd, w_buf, 64, 0) < 0) {
             perror("send");
+            fprintf(stderr, "Successful sends before failure: %zu\n", success_cnt);
             close(fd);
             return 1;
         }
