@@ -16,7 +16,7 @@ int main() {
     struct sockaddr_in sockaddr;
     sockaddr.sin_family = AF_INET;
     sockaddr.sin_port = htons(12345);
-    int result = inet_pton(AF_INET, "127.0.0.1", &sockaddr.sin_addr);
+    int result = inet_pton(AF_INET, "172.20.10.3", &sockaddr.sin_addr);
     if (result != 1) {
         perror("inet_pton");
         close(fd);
@@ -30,13 +30,17 @@ int main() {
         return 1;
     }
 
+    size_t success_cnt = 0;
+
     for (int i = 0; i < 100000; i++) {
         if (send(fd, w_buf, 64, 0) < 0) {
             perror("send");
             close(fd);
             return 1;
         }
+        success_cnt++;
     }
+    printf("success send count: %zu\n", success_cnt);
     close(fd);
     return 0;
 }
